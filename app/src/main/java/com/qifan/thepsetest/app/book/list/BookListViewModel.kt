@@ -9,7 +9,6 @@ class BookListViewModel(
     private val booksRepository: GetBooksRepository
 ) : BaseViewModel() {
 
-
     fun getBooks() {
         booksRepository.getBooks()
             .mainThread()
