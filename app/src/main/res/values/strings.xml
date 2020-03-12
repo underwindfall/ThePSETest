@@ -1,3 +1,6 @@
 <resources>
-	<string name="app_name">ThePSETest</string>
+    <string name="app_name">ThePSETest</string>
+    <string name="error_message">Fetch Data Erreur</string>
+    <string name="error_network">Network connexion fonctionne pas</string>
+    <string name="toolbar_book_list">La bibliothèque d\'Henri Potier</string>
 </resources>

@@ -1,18 +1,18 @@
 package com.qifan.thepsetest.app.book.list
 
-import android.util.Log
+import com.qifan.thepsetest.app.base.viewmodel.LoadingViewModel
+import com.qifan.thepsetest.domain.model.BookModel
+import com.qifan.thepsetest.domain.model.Results
 import com.qifan.thepsetest.domain.repository.GetBooksRepository
-import com.qifan.thepsetest.extension.reactive.mainThread
-import com.qifan.thepsetest.app.base.viewmodel.BaseViewModel
+import io.reactivex.Single
 
 class BookListViewModel(
     private val booksRepository: GetBooksRepository
-) : BaseViewModel() {
+) : LoadingViewModel<Results<List<BookModel>>>() {
 
-    fun getBooks() {
-        booksRepository.getBooks()
-            .mainThread()
-            .subscribe { it -> Log.d("QIfan", "$it") }
-            .let(compositeDisposable::add)
+    fun getBooks(): Single<Results<List<BookModel>>> {
+        return booksRepository.getBooks()
+            .bindLoadingState(data)
     }
+
 }

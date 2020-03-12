@@ -1,10 +1,11 @@
 package com.qifan.thepsetest.app.base.viewmodel
 
 import androidx.lifecycle.ViewModel
-import io.reactivex.disposables.CompositeDisposable
+import com.qifan.thepsetest.app.base.ReactiveBehavior
+import com.qifan.thepsetest.app.base.ReactiveBehaviorDelegate
 
-abstract class BaseViewModel : ViewModel() {
-    protected val compositeDisposable = CompositeDisposable()
+abstract class BaseViewModel : ViewModel(),
+    ReactiveBehavior by ReactiveBehaviorDelegate() {
 
     override fun onCleared() {
         super.onCleared()

@@ -5,5 +5,6 @@ data class BookModel(
     val title: String?,
     val cover: String?,
     val price: Int?,
-    val synopsis: List<String>?
+    val synopsis: List<String>?,
+    var selected: Boolean = false
 )
