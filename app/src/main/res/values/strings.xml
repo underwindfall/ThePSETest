@@ -3,4 +3,7 @@
     <string name="error_message">Fetch Data Erreur</string>
     <string name="error_network">Network connexion fonctionne pas</string>
     <string name="toolbar_book_list">La bibliothèque d\'Henri Potier</string>
+    <string name="remove">Retrier</string>
+    <string name="add">Adjouter</string>
+    <string name="need_add_shop">Vous avez besoin de choisir au moins un livre</string>
 </resources>

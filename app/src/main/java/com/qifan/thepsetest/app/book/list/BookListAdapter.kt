@@ -11,11 +11,15 @@ import com.qifan.thepsetest.R
 import com.qifan.thepsetest.domain.model.BookModel
 import com.qifan.thepsetest.extension.inflateLayout
 import com.squareup.picasso.Picasso
+import io.reactivex.Flowable
 import io.reactivex.processors.PublishProcessor
 
-class BookListAdapter : RecyclerView.Adapter<BookListAdapter.ViewHolder>() {
+class BookListAdapter :
+    RecyclerView.Adapter<BookListAdapter.ViewHolder>() {
     private val books = mutableListOf<BookModel>()
     private val mSelectedList = PublishProcessor.create<List<BookModel>>()
+
+    val selectedList: Flowable<List<BookModel>> = mSelectedList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(parent.inflateLayout(R.layout.item_book))
@@ -30,9 +34,16 @@ class BookListAdapter : RecyclerView.Adapter<BookListAdapter.ViewHolder>() {
 
             holder.titleTextView.text = title
             holder.priceTextView.text = "$price €"
-            holder.buttonAddRemoveButton.setOnClickListener {
-                selected = !selected
-                mSelectedList.onNext(books.filter { it.selected })
+            holder.buttonAddRemoveButton.apply {
+                setOnClickListener {
+                    selected = !selected
+                    text = if (selected) {
+                        context.getString(R.string.remove)
+                    } else {
+                        context.getString(R.string.add)
+                    }
+                    mSelectedList.onNext(books.filter { it.selected })
+                }
             }
         }
     }

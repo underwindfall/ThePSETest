@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.qifan.thepsetest.R
 import com.qifan.thepsetest.app.base.ReactiveBehavior
 import com.qifan.thepsetest.app.base.ReactiveBehaviorDelegate
@@ -11,18 +12,31 @@ import com.qifan.thepsetest.app.base.fragment.InjectionFragment
 import com.qifan.thepsetest.domain.exception.PSEBookException
 import com.qifan.thepsetest.domain.model.BookModel
 import com.qifan.thepsetest.domain.model.Results
-import com.qifan.thepsetest.extension.reactive.mainThread
-import com.qifan.thepsetest.extension.reactive.subscribeAndLogError
+import com.qifan.thepsetest.extension.reactive.*
 import kotlinx.android.synthetic.main.book_list_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+private const val ERROR = "Activity should implement BookRouterCallback interface"
+
 class BookListFragment : InjectionFragment(),
     ReactiveBehavior by ReactiveBehaviorDelegate() {
+    private var selectedBooks = mutableListOf<BookModel>()
     private val bookListViewModel: BookListViewModel by viewModel()
     private lateinit var bookListAdapter: BookListAdapter
+    private val routerCallback by lazy<BookRouterCallback> {
+        activity.let {
+            check(it is BookRouterCallback) { ERROR }
+            it
+        }
+    }
 
     override fun getMenuId(): Int? = null
     override fun getLayoutId(): Int = R.layout.book_list_fragment
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        routerCallback
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,9 +45,11 @@ class BookListFragment : InjectionFragment(),
         setUpRecyclerView()
         compositeDisposable.addAll(
             fetchBooks().subscribeAndLogError(),
-            handleDataError().subscribeAndLogError(),
             handleDataLoading().subscribeAndLogError(),
-            handleDataSuccess().subscribeAndLogError()
+            handleDataError().subscribeAndLogError(),
+            handleDataSuccess().subscribeAndLogError(),
+            handleFabClick().subscribeAndLogError(),
+            handleSelectedBook().subscribeAndLogError()
         )
     }
 
@@ -75,6 +91,8 @@ class BookListFragment : InjectionFragment(),
         .doOnNext { (hasError, error) ->
             if (hasError) {
                 displayError(error)
+            } else {
+                displayLoading(true)
             }
         }
 
@@ -101,19 +119,38 @@ class BookListFragment : InjectionFragment(),
 
     private fun displayLoading(show: Boolean) {
         if (show) {
-            books_recycler_view.visibility = View.VISIBLE
-            loading.visibility = View.GONE
-            error_message.visibility = View.GONE
-        } else {
             books_recycler_view.visibility = View.GONE
             loading.visibility = View.VISIBLE
+            error_message.visibility = View.GONE
+        } else {
+            books_recycler_view.visibility = View.VISIBLE
+            loading.visibility = View.GONE
             error_message.visibility = View.GONE
         }
     }
 
 
+    private fun handleFabClick() = fab_offer.clicks()
+        .toFlowableDefault()
+        .throttleDefault()
+        .doOnNext {
+            if (selectedBooks.isNotEmpty()) {
+                routerCallback.navigateToOffer(selectedBooks)
+            } else {
+                Snackbar.make(fab_offer, R.string.need_add_shop, Snackbar.LENGTH_SHORT).show()
+            }
+        }
+
+
+    private fun handleSelectedBook() = bookListAdapter.selectedList
+        .doOnNext {
+            selectedBooks.clear()
+            selectedBooks = it.toMutableList()
+        }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        selectedBooks.clear()
         compositeDisposable.clear()
     }
 }
