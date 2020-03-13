@@ -30,7 +30,6 @@ class BookListFragment : InjectionFragment(),
         }
     }
 
-    override fun getMenuId(): Int? = null
     override fun getLayoutId(): Int = R.layout.book_list_fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -6,4 +6,9 @@
     <string name="remove">Retrier</string>
     <string name="add">Adjouter</string>
     <string name="need_add_shop">Vous avez besoin de choisir au moins un livre</string>
+    <string name="back">back</string>
+    <string name="toolbar_book_offer">Le mellieur reduction</string>
+    <string name="best_offer">le meilleur offre</string>
+    <string name="total_price">Le prix original</string>
+    <string name="reduction">Reduction:</string>
 </resources>
