@@ -18,14 +18,14 @@ fun BookEntity.toModel(): BookModel {
 
 fun OfferEntity.toModel(): OfferModel {
     return OfferModel(
-        offers = offers?.map { it.toModel() }
+        offers = offers?.map { it.toModel() } ?: emptyList()
     )
 }
 
 fun OfferEntity.OffersItem.toModel(): OfferModel.OffersModelItem {
     return OfferModel.OffersModelItem(
         sliceValue = sliceValue,
-        type = type,
-        value = value
+        type = OfferModel.Type.fromValue(type),
+        value = value ?: 0
     )
 }

@@ -60,7 +60,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/total_placeholder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/total_placeholder"
-            app:mutableText="@{offerViewModel.getTotalPrice()}"
             tools:text="200€" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -74,7 +73,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/offer_placeholder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/offer_placeholder"
-            app:mutableText="@{offerViewModel.getReductionPrice()}"
             tools:text="99€" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -103,7 +101,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/reduction_palceholder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/reduction_palceholder"
-            app:mutableText="@{offerViewModel.getReductionType()}"
             tools:text="-30€" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

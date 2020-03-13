@@ -23,7 +23,10 @@ class BookActivity : BaseActivity(), BookRouterCallback, OfferRouterCallback {
     override fun getLayoutId(): Int = R.layout.main_activity
 
     override fun navigateToOffer(books: MutableList<BookModel>) {
-        this.books = books
+        this.books .apply {
+            clear()
+            addAll(books)
+        }
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, OfferFragment())
             .addToBackStack("Offer")
