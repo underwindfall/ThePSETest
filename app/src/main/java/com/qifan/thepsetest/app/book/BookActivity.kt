@@ -23,11 +23,17 @@ class BookActivity : BaseActivity(), BookRouterCallback, OfferRouterCallback {
     override fun getLayoutId(): Int = R.layout.main_activity
 
     override fun navigateToOffer(books: MutableList<BookModel>) {
-        this.books .apply {
+        this.books.apply {
             clear()
             addAll(books)
         }
         supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            )
             .replace(R.id.container, OfferFragment())
             .addToBackStack("Offer")
             .commit()

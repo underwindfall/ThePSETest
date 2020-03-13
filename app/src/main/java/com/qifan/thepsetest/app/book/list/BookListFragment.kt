@@ -56,6 +56,7 @@ class BookListFragment : InjectionFragment(),
         activity?.apply {
             findViewById<Toolbar>(R.id.toolbar)?.apply {
                 title = getString(R.string.toolbar_book_list)
+                navigationIcon = null
             }
         }
     }
